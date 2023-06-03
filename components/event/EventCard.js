@@ -26,7 +26,7 @@ const EventCard = ({
   };
   const router = useRouter();
   return (
-    <Card className="text-center">
+    <Card className="text-center" style={{ width: '300px' }}>
       <Card.Header>Game: {game}</Card.Header>
       <Card.Body>
         <Card.Text>{description}</Card.Text>
@@ -37,16 +37,34 @@ const EventCard = ({
         onClick={() => {
           router.push(`/events/edit/${id}`);
         }}
+        style={{ margin: '10px', backgroundColor: '#6699CC' }}
       >
         Edit Event
       </Button>
-      <Button onClick={deleteThisEvent}>
+      <Button
+        onClick={deleteThisEvent}
+        style={{ margin: '10px', backgroundColor: '#6699CC' }}
+      >
         Delete
       </Button>
       {
         joined
-          ? <Button className="btn-danger" onClick={leave}>Leave</Button>
-          : <Button className="btn-success" onClick={join}>Join</Button>
+          ? (
+            <Button
+              className="btn-danger"
+              onClick={leave}
+              style={{ margin: '10px', backgroundColor: '#006400' }}
+            >Leave
+            </Button>
+          )
+          : (
+            <Button
+              className="btn-success"
+              onClick={join}
+              style={{ margin: '10px', backgroundColor: '#006400' }}
+            >Join
+            </Button>
+          )
       }
     </Card>
   );

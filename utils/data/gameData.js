@@ -9,14 +9,8 @@ const createGame = (game) => new Promise((resolve, reject) => {
     body: JSON.stringify(game),
   })
     .then((response) => response.json())
-    .then((data) => {
-      console.warn('Create Game Response:', data);
-      resolve(data); // request.data from def create()
-    })
-    .catch((error) => {
-      console.error('Create Game Error:', error);
-      reject(error);
-    });
+    .then((data) => resolve(data))
+    .catch(reject);
 });
 
 const getGames = () => new Promise((resolve, reject) => {
@@ -39,9 +33,20 @@ const getSingleGame = (id) => new Promise((resolve, reject) => {
 });
 
 const getGameTypes = () => new Promise((resolve, reject) => {
-  fetch(`${clientCredentials.databaseURL}/gametypes`, {})
+  fetch(`${clientCredentials.databaseURL}/gametypes`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
     .then((response) => response.json())
-    .then(resolve)
+    .then((data) => {
+      if (data) {
+        resolve(Object.values(data));
+      } else {
+        resolve([]);
+      }
+    })
     .catch(reject);
 });
 
@@ -57,8 +62,8 @@ const updateGame = (game) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-const deleteGame = (game) => new Promise((resolve, reject) => {
-  fetch(`${clientCredentials.databaseURL}/games/${game}`, {
+const deleteGame = (id) => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/games/${id}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application.json',
