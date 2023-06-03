@@ -62,7 +62,7 @@ const EventForm = ({ obj }) => {
         userId: user.uid,
       };
       updateEvent(eventUpdate)
-        .then(() => router.push('/events/events'));
+        .then(() => router.push('/events'));
     } else {
       const event = {
         description: currentEvent.description,
@@ -72,14 +72,14 @@ const EventForm = ({ obj }) => {
         userId: user.uid,
       };
       // Send POST request to your API
-      createEvent(event).then(() => router.push('/events/events'));
+      createEvent(event).then(() => router.push('/events'));
     }
   };
 
   return (
     <>
       <Form onSubmit={handleSubmit}>
-        <h2 className="text-white mt-5">{obj.id ? 'Update' : 'Create'} Event</h2>
+        <h2 className="text-grey mt-5">{obj.id ? 'Update' : 'Create'} Event</h2>
         <Form.Group className="mb-3">
           <Form.Label>Game</Form.Label>
           <Form.Select aria-label="game" name="game" onChange={handleChange} required value={currentEvent.game}>

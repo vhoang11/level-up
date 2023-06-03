@@ -5,7 +5,7 @@ const NewGame = () => {
   const { user } = useAuth();
   return (
     <div>
-      <h2>Register New Game</h2>
+      <h2 style={{ marginTop: '40px' }}>Register New Game</h2>
       <GameForm user={user} />
     </div>
   );

@@ -15,40 +15,32 @@ const initialState = {
   gameType: 0,
 };
 
-// GameForm component
 const GameForm = ({ obj }) => {
-  const [gameTypes, setGameTypes] = useState([]); // State for storing game types
-  const [currentGame, setCurrentGame] = useState(initialState); // State for storing current game data
-  const router = useRouter(); // Router instance from Next.js
-  const { user } = useAuth(); // Accessing authentication context
+  const [gameTypes, setGameTypes] = useState([]);
+  const [currentGame, setCurrentGame] = useState(initialState);
+  const router = useRouter();
+  const { user } = useAuth();
 
   useEffect(() => {
-    // When the component mounts or the "obj" or "user" changes, update the current game state
     if (obj.id) {
       setCurrentGame({
         id: obj.id,
         maker: obj.maker,
         title: obj.title,
-        numberOfPlayers: obj.numberOfPlayers,
-        skillLevel: obj.skillLevel,
-        gameType: obj.gameType.id,
+        numberOfPlayers: Number(obj.numberOfPlayers),
+        skillLevel: Number(obj.skillLevel),
+        gameType: Number(obj.gameType.id),
         userId: user.uid,
       });
     }
   }, [obj, user]);
 
   useEffect(() => {
-    // When the component mounts, fetch the game types and update the game types state
     getGameTypes().then(setGameTypes);
   }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    // Validate if the input is a valid integer
-    if (name === 'numberOfPlayers' && !Number.isInteger(Number(value))) {
-      return; // Do not update the state if the input is not a valid integer
-    }
 
     setCurrentGame((prevState) => ({
       ...prevState,
@@ -57,7 +49,6 @@ const GameForm = ({ obj }) => {
   };
 
   const handleSubmit = (e) => {
-    // Prevent the form from being submitted
     e.preventDefault();
 
     // Check if the game has an ID (existing game being updated)
@@ -67,26 +58,26 @@ const GameForm = ({ obj }) => {
         id: obj.id,
         maker: currentGame.maker,
         title: currentGame.title,
-        numberOfPlayers: currentGame.numberOfPlayers,
-        skillLevel: currentGame.skillLevel,
+        numberOfPlayers: Number(currentGame.numberOfPlayers),
+        skillLevel: Number(currentGame.skillLevel),
         gameType: Number(currentGame.gameType),
         userId: user.uid,
       };
       // Update the game data using the updateGame function
       updateGame(gameUpdate)
-        .then(() => router.push('/games/games')); // Redirect to the games page after the update
+        .then(() => router.push('/games'));
     } else {
       // Prepare game data for creation
       const game = {
         maker: currentGame.maker,
         title: currentGame.title,
-        numberOfPlayers: currentGame.numberOfPlayers,
-        skillLevel: currentGame.skillLevel,
-        gameType: currentGame.gameType,
+        numberOfPlayers: Number(currentGame.numberOfPlayers),
+        skillLevel: Number(currentGame.skillLevel),
+        gameType: Number(currentGame.gameType),
         userId: user.uid,
       };
       // Create a new game by sending a POST request to the server using the createGame function
-      createGame(game).then(() => router.push('/games/games')); // Redirect to the games page after the creation
+      createGame(game).then(() => router.push('/games'));
     }
   };
 
@@ -94,7 +85,7 @@ const GameForm = ({ obj }) => {
     <>
       <Form onSubmit={handleSubmit}>
 
-        <h2 className="text-white mt-5">{obj.id ? 'Update' : 'Create'} Game</h2>
+        <h2 className="text-grey mt-5">{obj.id ? 'Update' : 'Create'} Game</h2>
 
         <Form.Group className="mb-3">
           <Form.Label>Title</Form.Label>
@@ -121,7 +112,7 @@ const GameForm = ({ obj }) => {
           <Form.Select aria-label="gametype" name="gameType" onChange={handleChange} required value={currentGame.gameType}>
             <option value="">Pick a Type</option>
             {
-      // Map over the gameTypes array and render an option element for each game type
+
       gameTypes.map((type) => (
         <option
           key={type.id} // Assign a unique key to each option element
@@ -149,7 +140,8 @@ GameForm.propTypes = {
     numberOfPlayers: PropTypes.number,
     title: PropTypes.string,
     maker: PropTypes.string,
-    gameType: PropTypes.number,
+    // eslint-disable-next-line react/forbid-prop-types
+    gameType: PropTypes.object,
   }),
 };
 
