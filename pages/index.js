@@ -1,9 +1,11 @@
+import React from 'react';
 import { Button } from 'react-bootstrap';
 import { signOut } from '../utils/auth';
 import { useAuth } from '../utils/context/authContext';
 
 function Home() {
   const { user } = useAuth();
+
   return (
     <div
       className="text-center d-flex flex-column justify-content-center align-content-center"
